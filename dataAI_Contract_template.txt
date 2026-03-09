@@ -1,0 +1,27 @@
+dataAI_Contract
+id: 556706 (businessMap)
+info:
+  title: título do projeto (exemplo - Recusa de oferta de vacina)
+  area: área stakeholders do projeto (diretoria), exemplos - Operações de farmácia, pricing ecommerce, pricing lojas, jurídico, Gente e Cultura, Multicanal, Comercial, Supply Chain, CSC
+  initiative: possíveis iniciativas - BI, Deep, wide-n8n, wide-lovable, wide-superblocks, Alteryx, Copilot
+  version: 1.0.0
+  description:  (descrever a iniciativa)
+    Utilizar os registros de ofertas recusadas/aceitas (armazenados no MongoDB do AV) para implementar lógica de re-ofertas aos clientes, respeitando um período de stand-by de 7 dias após recusa.
+Como sistema de ofertas,
+Preciso rastrear e respeitar as recusas de clientes,
+Para que não façamos re-ofertas indesejadas durante um período de 7 dias após recusa.
+  cost (cloud): R$x.xxx,xx/mês
+  projected_return: exemplos - a ser estimado, R$xx.xxx,xx/mês de receita, R$xxx de redução de custo
+  owner: exemplos - Data Science Enablement Team, BI, Diretoria stakeholder quando initiative = wide-.
+  status: active/inactive/development/staging
+  contact:
+    name: Jane Smith (ML Ops Engineer)
+    email: jane.smith@rdsaude.com.br
+  sec_approval: https://s3.rdsaude.com.br/approvals/approval.jpg
+  docs_link: https://wiki-hyt.ds.dados.rd.com.br/e/pt-br/MLOps/contrato
+
+terms:
+  usage: (texto que explica o uso/operação do projeto quando ativo e em produção)
+    Conectado diretamente no TR, interação estrita atrás do balcão.
+	Ao oferecer uma oferta personalizada gerada pelo time de IA, caso o cliente recuse a oferta, o atendente declara a recusa através de botão desenvolvido pelo time da Squad do TR e o sistema automaticamente define recusas com base em regras de negócio, para que a oferta não seja repetida em tempo pré determinado.
+  limitations: nenhuma

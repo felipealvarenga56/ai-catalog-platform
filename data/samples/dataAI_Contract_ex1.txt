@@ -1,0 +1,28 @@
+dataAI_Contract
+id: 556706 (businessMap)
+info:
+  title: Recusa de oferta de vacina
+  area: OPF
+  initiative: Deep
+  version: 1.0.0
+  description: |
+    Utilizar os registros de ofertas recusadas/aceitas (armazenados no MongoDB do AV) para implementar lógica de re-ofertas aos clientes, respeitando um período de stand-by de 7 dias após recusa.
+Como sistema de ofertas,
+Preciso rastrear e respeitar as recusas de clientes,
+Para que não façamos re-ofertas indesejadas durante um período de 7 dias após recusa.
+
+  owner: Data Science Enablement Team
+  status: active
+  contact:
+    name: Jane Smith (ML Ops Engineer)
+    email: jane.smith@rdsaude.com.br
+  sec_approval: https://s3.rdsaude.com.br/approvals/approval.jpg
+  docs_link: https://wiki-hyt.ds.dados.rd.com.br/e/pt-br/MLOps/contrato
+  cost (cloud): R$18.000,00/mês
+  projected_return: a ser estimado
+
+terms:
+  usage: |
+    Conectado diretamente no TR, interação estrita atrás do balcão.
+	Ao oferecer uma oferta personalizada gerada pelo time de IA, caso o cliente recuse a oferta, o atendente declara a recusa através de botão desenvolvido pelo time da Squad do TR e o sistema automaticamente define recusas com base em regras de negócio, para que a oferta não seja repetida em tempo pré determinado.
+  limitations: nenhuma

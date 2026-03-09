@@ -1,0 +1,75 @@
+[
+  {
+    "tool_id": "n8n",
+    "tool_name": "n8n - Automação de Workflows",
+    "steps": [
+      "1. Acesse o portal de serviços de TI em https://servicedesk.exemplo.com",
+      "2. Abra um chamado na categoria 'Acesso a Ferramentas > n8n'",
+      "3. Informe o nome do projeto e a justificativa de uso",
+      "4. Aguarde aprovação do gestor direto (SLA: 2 dias úteis)",
+      "5. Após aprovação, você receberá as credenciais por e-mail",
+      "6. Acesse o n8n em https://n8n.interno.exemplo.com",
+      "7. Consulte a documentação interna em /docs/n8n-getting-started.pdf"
+    ],
+    "documentation_path": "data/delivery/n8n-getting-started.pdf",
+    "contact_info": "Equipe de Automação - automacao@exemplo.com"
+  },
+  {
+    "tool_id": "copilot",
+    "tool_name": "GitHub Copilot",
+    "steps": [
+      "1. Solicite licença via portal de TI em https://servicedesk.exemplo.com",
+      "2. Selecione a categoria 'Ferramentas de Desenvolvimento > GitHub Copilot'",
+      "3. Anexe a aprovação do seu gestor e do líder técnico",
+      "4. A equipe de segurança revisará o pedido (SLA: 5 dias úteis)",
+      "5. Após aprovação, a licença será vinculada ao seu GitHub corporativo",
+      "6. Instale a extensão GitHub Copilot no VS Code",
+      "7. Faça login com sua conta GitHub corporativa"
+    ],
+    "documentation_path": "data/delivery/copilot-setup-guide.pdf",
+    "contact_info": "Equipe de DevTools - devtools@exemplo.com"
+  },
+  {
+    "tool_id": "alteryx",
+    "tool_name": "Alteryx Designer",
+    "steps": [
+      "1. Acesse o portal de licenças em https://licencas.exemplo.com",
+      "2. Solicite uma licença Alteryx Designer na categoria 'Analytics'",
+      "3. Preencha o formulário com justificativa e projeto associado",
+      "4. Aguarde aprovação da gerência de dados (SLA: 3 dias úteis)",
+      "5. Faça download do instalador no repositório interno",
+      "6. Instale e ative com a chave de licença recebida por e-mail",
+      "7. Acesse os templates de workflow em //servidor/alteryx/templates/"
+    ],
+    "documentation_path": "data/delivery/alteryx-onboarding.pdf",
+    "contact_info": "Equipe de Analytics - analytics@exemplo.com"
+  },
+  {
+    "tool_id": "deep_team",
+    "tool_name": "Equipe Deep - AI/ML Specialists",
+    "steps": [
+      "1. Preencha o formulário de intake em https://forms.exemplo.com/deep-intake",
+      "2. Descreva o problema de negócio e os dados disponíveis",
+      "3. A equipe Deep fará uma triagem inicial (SLA: 3 dias úteis)",
+      "4. Participe da reunião de discovery para alinhamento técnico",
+      "5. Após aprovação do escopo, o projeto entra no backlog da equipe",
+      "6. Acompanhe o progresso pelo board em https://jira.exemplo.com/deep"
+    ],
+    "documentation_path": null,
+    "contact_info": "Equipe Deep - deep@exemplo.com"
+  },
+  {
+    "tool_id": "bi_team",
+    "tool_name": "Equipe BI - Business Intelligence",
+    "steps": [
+      "1. Envie a solicitação pelo canal #bi-requests no Teams",
+      "2. Preencha o template de requisição de dashboard/relatório",
+      "3. A equipe BI priorizará conforme impacto e esforço (SLA: 5 dias úteis)",
+      "4. Participe do refinamento de requisitos com o analista designado",
+      "5. Valide o protótipo do dashboard antes da publicação",
+      "6. Após publicação, solicite acessos adicionais pelo portal de BI"
+    ],
+    "documentation_path": "data/delivery/bi-request-template.pdf",
+    "contact_info": "Equipe BI - bi@exemplo.com"
+  }
+]

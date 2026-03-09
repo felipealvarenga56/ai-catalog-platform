@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Governance Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav-link { color: #4b5563; border-bottom: 2px solid transparent; padding: 0.75rem 1rem; font-size: 0.875rem; transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; }
+    .nav-link:hover { color: #16a34a; background-color: #f0fdf4; }
+    .nav-link.active { color: #16a34a; border-bottom-color: #16a34a; font-weight: 600; }
+    .badge-active      { background: #dcfce7; color: #166534; }
+    .badge-development { background: #dbeafe; color: #1d4ed8; }
+    .badge-staging     { background: #fef9c3; color: #854d0e; }
+    .badge-inactive    { background: #f3f4f6; color: #4b5563; }
+    .bubble-user { background: #dcfce7; border-radius: 1rem 1rem 0.25rem 1rem; }
+    .bubble-bot  { background: #f3f4f6; border-radius: 1rem 1rem 1rem 0.25rem; }
+    .btn-primary { background-color: #16a34a; color: #fff; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem; transition: background-color 0.15s; }
+    .btn-primary:hover  { background-color: #15803d; }
+    .btn-primary:active { background-color: #166534; }
+    .btn-secondary { background-color: #fff; color: #16a34a; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; border: 1.5px solid #16a34a; cursor: pointer; transition: background-color 0.15s; }
+    .btn-secondary:hover { background-color: #f0fdf4; }
+    .btn-ghost { background-color: transparent; color: #374151; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; border: 1.5px solid #d1d5db; cursor: pointer; transition: background-color 0.15s; }
+    .btn-ghost:hover { background-color: #f3f4f6; }
+    .pulso-input { border: 1.5px solid #d1d5db; border-radius: 0.5rem; padding: 0.5rem 0.875rem; font-size: 0.875rem; color: #1f2937; background: #fff; outline: none; width: 100%; transition: border-color 0.15s, box-shadow 0.15s; }
+    .pulso-input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgb(22 163 74 / 0.15); }
+    .pulso-input::placeholder { color: #9ca3af; }
+    .pulso-select { border: 1.5px solid #d1d5db; border-radius: 0.5rem; padding: 0.5rem 0.875rem; font-size: 0.875rem; color: #1f2937; background: #fff; outline: none; transition: border-color 0.15s; }
+    .pulso-select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgb(22 163 74 / 0.15); }
+    .pulso-card { background: #fff; border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06); }
+    .pulso-card-hover { transition: box-shadow 0.15s; }
+    .pulso-card-hover:hover { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08); }
+    .modal-overlay { background: rgb(0 0 0 / 0.45); backdrop-filter: blur(2px); }
+    .kpi-card { background: #fff; border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06); padding: 1.25rem; text-align: center; }
+    .kpi-value { font-size: 1.875rem; font-weight: 700; line-height: 1.2; }
+    .kpi-label { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f3f4f6; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+  </style>
+</head>
+<body style="background:#f9fafb; min-height:100vh; display:flex; flex-direction:column;">
+
+  <header style="background:#16a34a;" class="text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div style="background:rgba(255,255,255,0.2); border-radius:0.5rem;" class="w-8 h-8 flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="3" fill="white"/>
+            <circle cx="3" cy="3" r="2" fill="white" opacity="0.8"/>
+            <circle cx="15" cy="3" r="2" fill="white" opacity="0.8"/>
+            <circle cx="3" cy="15" r="2" fill="white" opacity="0.8"/>
+            <circle cx="15" cy="15" r="2" fill="white" opacity="0.8"/>
+            <line x1="9" y1="9" x2="3" y2="3" stroke="white" stroke-width="1" opacity="0.6"/>
+            <line x1="9" y1="9" x2="15" y2="3" stroke="white" stroke-width="1" opacity="0.6"/>
+            <line x1="9" y1="9" x2="3" y2="15" stroke="white" stroke-width="1" opacity="0.6"/>
+            <line x1="9" y1="9" x2="15" y2="15" stroke="white" stroke-width="1" opacity="0.6"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight leading-none">Aura</h1>
+          <p class="text-xs leading-none mt-0.5" style="color:rgba(255,255,255,0.75)">Governanca de IA &amp; Dados</p>
+        </div>
+      </div>
+      <span class="text-xs hidden sm:block" style="color:rgba(255,255,255,0.65)">PoC v0.1</span>
+    </div>
+  </header>
+
+  <nav class="bg-white sticky top-0 z-30" style="border-bottom:1px solid #e5e7eb;" role="navigation" aria-label="Navegacao principal">
+    <div class="max-w-7xl mx-auto px-6 flex gap-1">
+      <button class="nav-link active" data-page="catalogo">Catalogo</button>
+      <button class="nav-link" data-page="wizard">Wizard</button>
+      <button class="nav-link" data-page="entrega">Entrega</button>
+      <button class="nav-link" data-page="relatorio">Relatorio Executivo</button>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-6">
+
+    <section id="page-catalogo" class="page active">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-bold" style="color:#1f2937">Catalogo de Projetos</h2>
+          <p class="text-sm mt-0.5" style="color:#6b7280">Repositorio unificado de iniciativas</p>
+        </div>
+        <button id="btn-report" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="1" width="11" height="13" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h5M5 7.5h5M5 10h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Relatorio Executivo
+        </button>
+      </div>
+      <div class="pulso-card p-4 mb-5">
+        <div class="flex flex-wrap gap-3">
+          <div class="flex-1 min-w-[200px] relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2" style="color:#9ca3af" width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M10 10L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <input id="search-input" type="text" placeholder="Buscar por nome ou descricao..." class="pulso-input" style="padding-left:2.25rem" aria-label="Buscar projetos">
+          </div>
+          <select id="source-filter" class="pulso-select" aria-label="Filtrar por iniciativa">
+            <option value="">Todas as iniciativas</option>
+            <option value="BI">BI</option>
+            <option value="Deep">Deep</option>
+            <option value="wide-n8n">n8n</option>
+            <option value="wide-lovable">Lovable</option>
+            <option value="wide-superblocks">Superblocks</option>
+            <option value="Alteryx">Alteryx</option>
+            <option value="Copilot">Copilot</option>
+          </select>
+          <button id="btn-search" class="btn-secondary">Buscar</button>
+        </div>
+      </div>
+      <div id="projects-list" class="space-y-3">
+        <p class="text-sm" style="color:#9ca3af">Carregando projetos...</p>
+      </div>
+      <div id="project-detail" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50" role="dialog" aria-modal="true">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6 max-h-[80vh] overflow-y-auto">
+          <div class="flex justify-between items-start mb-5">
+            <h3 id="detail-name" class="text-lg font-bold pr-4" style="color:#1f2937"></h3>
+            <button id="btn-close-detail" class="rounded-lg p-1" style="color:#9ca3af" aria-label="Fechar">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div id="detail-body" class="space-y-3 text-sm" style="color:#374151"></div>
+        </div>
+      </div>
+      <div id="report-modal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50" role="dialog" aria-modal="true">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6 max-h-[80vh] overflow-y-auto">
+          <div class="flex justify-between items-start mb-5">
+            <h3 class="text-lg font-bold" style="color:#1f2937">Relatorio Executivo</h3>
+            <button id="btn-close-report" class="rounded-lg p-1" style="color:#9ca3af" aria-label="Fechar">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div id="report-body" class="space-y-4 text-sm" style="color:#374151"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-wizard" class="page">
+      <div class="mb-6">
+        <h2 class="text-xl font-bold" style="color:#1f2937">Wizard - Assistente de IA</h2>
+        <p class="text-sm mt-0.5" style="color:#6b7280">Analise propostas e encontre a melhor solucao</p>
+      </div>
+      <div class="pulso-card flex flex-col" style="height:70vh;">
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-5 space-y-4" aria-live="polite">
+          <div class="bubble-bot p-4 max-w-[80%] text-sm leading-relaxed" style="color:#374151">
+            Ola! Sou o Wizard do Aura. Descreva sua necessidade ou proposta de projeto e vou analisar o catalogo para recomendar a melhor solucao.
+          </div>
+        </div>
+        <div class="p-4 flex gap-3 items-center" style="border-top:1px solid #e5e7eb;">
+          <input id="chat-input" type="text" placeholder="Descreva sua necessidade..." class="pulso-input flex-1" aria-label="Mensagem para o Wizard">
+          <button id="btn-send" class="btn-primary whitespace-nowrap">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 7.5L13.5 1.5L7.5 13.5V8L1.5 7.5Z" fill="currentColor"/></svg>
+            Enviar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-entrega" class="page">
+      <div class="mb-6">
+        <h2 class="text-xl font-bold" style="color:#1f2937">Entrega - Procedimentos de Acesso</h2>
+        <p class="text-sm mt-0.5" style="color:#6b7280">Instrucoes operacionais para cada ferramenta</p>
+      </div>
+      <div id="tools-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <p class="text-sm" style="color:#9ca3af">Carregando ferramentas...</p>
+      </div>
+      <div id="procedure-modal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50" role="dialog" aria-modal="true">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full mx-4 p-6 max-h-[80vh] overflow-y-auto">
+          <div class="flex justify-between items-start mb-5">
+            <h3 id="procedure-name" class="text-lg font-bold pr-4" style="color:#1f2937"></h3>
+            <button id="btn-close-procedure" class="rounded-lg p-1" style="color:#9ca3af" aria-label="Fechar">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div id="procedure-body" class="space-y-3 text-sm" style="color:#374151"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-relatorio" class="page">
+      <div class="mb-6">
+        <h2 class="text-xl font-bold" style="color:#1f2937">Relatorio Executivo</h2>
+        <p class="text-sm mt-0.5" style="color:#6b7280">Painel de Governanca de IA &amp; Dados</p>
+      </div>
+      <div class="pulso-card p-4 mb-6">
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color:#6b7280">Filtros</p>
+        <div class="flex flex-wrap gap-3 items-end">
+          <div class="flex-1 min-w-[140px]">
+            <label for="filter-area" class="block text-xs font-medium mb-1" style="color:#4b5563">Area</label>
+            <select id="filter-area" class="pulso-select w-full" aria-label="Filtrar por area"><option value="">Todas</option></select>
+          </div>
+          <div class="flex-1 min-w-[140px]">
+            <label for="filter-initiative" class="block text-xs font-medium mb-1" style="color:#4b5563">Iniciativa</label>
+            <select id="filter-initiative" class="pulso-select w-full" aria-label="Filtrar por iniciativa"><option value="">Todas</option></select>
+          </div>
+          <div class="flex-1 min-w-[140px]">
+            <label for="filter-status" class="block text-xs font-medium mb-1" style="color:#4b5563">Status</label>
+            <select id="filter-status" class="pulso-select w-full" aria-label="Filtrar por status"><option value="">Todos</option></select>
+          </div>
+          <div class="flex-1 min-w-[140px]">
+            <label for="filter-owner" class="block text-xs font-medium mb-1" style="color:#4b5563">Proprietario</label>
+            <select id="filter-owner" class="pulso-select w-full" aria-label="Filtrar por proprietario"><option value="">Todos</option></select>
+          </div>
+          <button id="btn-clear-filters" class="btn-ghost">Limpar Filtros</button>
+        </div>
+      </div>
+      <div id="kpi-cards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 mb-6">
+        <div class="kpi-card"><p class="kpi-value" style="color:#1f2937" id="kpi-total">-</p><p class="kpi-label">Total de Contratos</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#15803d" id="kpi-active">-</p><p class="kpi-label">Contratos Ativos</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#2563eb" id="kpi-development">-</p><p class="kpi-label">Em Desenvolvimento</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#16a34a" id="kpi-sec-compliance">-</p><p class="kpi-label">Conformidade Seg.</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#16a34a" id="kpi-docs-compliance">-</p><p class="kpi-label">Conformidade Docs</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#ca8a04" id="kpi-cost-coverage">-</p><p class="kpi-label">Cobertura de Custo</p></div>
+        <div class="kpi-card"><p class="kpi-value" style="color:#22c55e" id="kpi-return-coverage">-</p><p class="kpi-label">Cobertura de Retorno</p></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+        <div class="pulso-card p-5"><h3 class="text-sm font-semibold mb-4" style="color:#374151">Contratos por Iniciativa</h3><canvas id="chart-initiative"></canvas></div>
+        <div class="pulso-card p-5"><h3 class="text-sm font-semibold mb-4" style="color:#374151">Contratos por Status</h3><canvas id="chart-status"></canvas></div>
+        <div class="pulso-card p-5"><h3 class="text-sm font-semibold mb-4" style="color:#374151">Contratos por Area</h3><canvas id="chart-area"></canvas></div>
+        <div class="pulso-card p-5"><h3 class="text-sm font-semibold mb-4" style="color:#374151">Contratos por Proprietario</h3><canvas id="chart-owner"></canvas></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+        <div class="pulso-card p-5">
+          <h3 class="text-sm font-semibold mb-4" style="color:#374151">Area x Iniciativa</h3>
+          <div id="cross-area-initiative" class="overflow-x-auto"><p class="text-sm" style="color:#9ca3af">Carregando dados...</p></div>
+        </div>
+        <div class="pulso-card p-5">
+          <h3 class="text-sm font-semibold mb-4" style="color:#374151">Area x Status</h3>
+          <div id="cross-area-status" class="overflow-x-auto"><p class="text-sm" style="color:#9ca3af">Carregando dados...</p></div>
+        </div>
+      </div>
+      <div class="pulso-card p-5">
+        <h3 class="text-sm font-semibold mb-4" style="color:#374151">Resumo Financeiro por Iniciativa</h3>
+        <div id="financial-table" class="overflow-x-auto"><p class="text-sm" style="color:#9ca3af">Carregando dados financeiros...</p></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-white text-center text-xs py-4" style="border-top:1px solid #e5e7eb; color:#9ca3af;">
+    Aura Governance Platform - PoC v0.1
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
